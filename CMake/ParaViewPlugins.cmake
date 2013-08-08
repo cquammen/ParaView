@@ -126,6 +126,13 @@ MACRO(ADD_SERVER_MANAGER_EXTENSION OUTSRCS Name Version XMLFile)
   IF(HDRS)
     include(vtkWrapClientServer)
 
+    # Plugins should not use unified bindings. The problem arises because the
+    # PythonD library links to the plugin itself, but the CS wrapping code
+    # lives in the plugin as well. With unified bindings, the CS wrapping
+    # needs to link to the PythonD library which causes a circular
+    # dependency. The solution is probably to compile all bindings for a
+    # plugin into a single library.
+    set(NO_PYTHON_BINDINGS_AVAILABLE TRUE)
     VTK_WRAP_ClientServer(${Name} CS_SRCS "${HDRS}")
     # only generate the instantiator code for cxx classes that'll be included in
     # the plugin
@@ -1281,7 +1288,8 @@ macro(pv_process_modules)
     add_subdirectory("${${_module}_SOURCE_DIR}" "${${_module}_BINARY_DIR}")
     if (NOT ${_module}_EXCLUDE_FROM_WRAPPING AND
         NOT ${_module}_IS_TEST AND
-        NOT ${_module}_THIRD_PARTY)
+        NOT ${_module}_THIRD_PARTY AND
+        NOT PARAVIEW_USE_UNIFIED_BINDINGS)
         vtk_add_cs_wrapping(${_module})
         list(APPEND plugin_cs_modules ${_module})
     endif()

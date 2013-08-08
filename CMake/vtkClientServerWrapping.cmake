@@ -19,11 +19,22 @@ macro(vtk_add_cs_wrapping module)
   vtk_module_dep_includes(${module})
   vtk_add_library(${module}CS STATIC ${${module}CS_SRCS})
   target_link_libraries(${module}CS LINK_PUBLIC vtkClientServer LINK_PRIVATE ${module})
-  set_property(TARGET ${module}CS APPEND  
+  set_property(TARGET ${module}CS APPEND
     PROPERTY INCLUDE_DIRECTORIES
     ${${module}_DEPENDS_INCLUDE_DIRS}
     ${${module}_INCLUDE_DIRS}
     ${vtkClientServer_INCLUDE_DIRS})
+  if (PARAVIEW_USE_UNIFIED_BINDINGS)
+    target_link_libraries(${module}CS
+      LINK_PUBLIC
+        ${module}PythonD
+      LINK_PRIVATE
+        vtkPythonInterpreter)
+    set_property(TARGET ${module}CS APPEND
+      PROPERTY INCLUDE_DIRECTORIES
+      ${vtkPython_INCLUDE_DIRS}
+      ${vtkPythonInterpreter_INCLUDE_DIRS})
+  endif ()
   if (NOT WIN32)
     set_property(TARGET ${module}CS APPEND
       PROPERTY COMPILE_FLAGS "-fPIC")
