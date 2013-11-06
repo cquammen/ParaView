@@ -13,9 +13,14 @@ if (PARAVIEW_DATA_ROOT)
         --enable-bt
         --data=${PARAVIEW_DATA_ROOT}/Data/can.ex2
         ${CMAKE_CURRENT_SOURCE_DIR}/TestPythonAnnotationFilterNoMerge.py)
+    add_test(NAME pvpython.TestPythonView
+        COMMAND pvpython
+        --enable-bt
+        ${CMAKE_CURRENT_SOURCE_DIR}/TestPythonView.py)
     set_tests_properties(
       pvpython.TestPythonAnnotationFilter
       pvpython.TestPythonAnnotationFilterNoMerge
+      pvpython.TestPythonView
       PROPERTIES LABELS "PARAVIEW")
   endif()
 

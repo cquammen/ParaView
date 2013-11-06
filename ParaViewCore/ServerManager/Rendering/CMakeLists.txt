@@ -47,6 +47,7 @@ set (Module_SRCS
   vtkSMParallelCoordinatesRepresentationProxy.cxx
   vtkSMPlotMatrixViewProxy.cxx
   vtkSMPVRepresentationProxy.cxx
+  vtkSMPythonViewProxy.cxx
   vtkSMRenderViewProxy.cxx
   vtkSMRepresentationProxy.cxx
   vtkSMScalarBarWidgetRepresentationProxy.cxx

@@ -165,6 +165,7 @@ if(PARAVIEW_ENABLE_PYTHON)
   set(TESTS_WITH_BASELINES
     ${TESTS_WITH_BASELINES}
     ${CMAKE_CURRENT_SOURCE_DIR}/SelectionLabels.xml
+    ${CMAKE_CURRENT_SOURCE_DIR}/TestPythonView.xml
   )
 endif()
 
