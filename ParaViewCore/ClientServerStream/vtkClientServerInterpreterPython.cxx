@@ -228,6 +228,7 @@ static void ReturnResult(PyObject* result, vtkClientServerStream& resultStream)
     }
   else if (PyLong_Check(result))
     {
+#if PY_VERSION_HEX >= 0x02070000
     int overflow;
     PY_LONG_LONG num = PyLong_AsLongLongAndOverflow(result, &overflow);
     if (!overflow)
@@ -240,6 +241,19 @@ static void ReturnResult(PyObject* result, vtkClientServerStream& resultStream)
       resultStream << vtkClientServerStream::Reply << unum << vtkClientServerStream::End;
       }
     }
+#else
+  PY_LONG_LONG num = PyLong_AsLongLong(result);
+  if (PyErr_Occurred())
+    {
+    PyErr_Clear();
+    unsigned PY_LONG_LONG unum = PyLong_AsUnsignedLongLong(result);
+    resultStream << vtkClientServerStream::Reply << unum << vtkClientServerStream::End;
+    }
+  else
+    {
+    resultStream << vtkClientServerStream::Reply << num << vtkClientServerStream::End;
+    }
+#endif
   else if (PyFloat_Check(result))
     {
     double num = PyFloat_AsDouble(result);
