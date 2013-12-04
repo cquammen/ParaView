@@ -240,7 +240,6 @@ static void ReturnResult(PyObject* result, vtkClientServerStream& resultStream)
       unsigned PY_LONG_LONG unum = PyLong_AsUnsignedLongLong(result);
       resultStream << vtkClientServerStream::Reply << unum << vtkClientServerStream::End;
       }
-    }
 #else
   PY_LONG_LONG num = PyLong_AsLongLong(result);
   if (PyErr_Occurred())
@@ -254,6 +253,7 @@ static void ReturnResult(PyObject* result, vtkClientServerStream& resultStream)
     resultStream << vtkClientServerStream::Reply << num << vtkClientServerStream::End;
     }
 #endif
+    }
   else if (PyFloat_Check(result))
     {
     double num = PyFloat_AsDouble(result);
