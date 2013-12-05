@@ -200,6 +200,8 @@ static vtkObjectBase* NewInstanceCallback(void* ctx)
 
   vtkObjectBase* obj = PyVTKObject_GetObject(result);
   obj->Register(NULL);
+  // The caller owns the new object, so kick it out of the object cache.
+  vtkPythonUtil::RemoveObjectFromMap(result);
 
   Py_DECREF(result);
 
