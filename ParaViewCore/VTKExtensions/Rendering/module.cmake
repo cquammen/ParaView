@@ -2,12 +2,8 @@ set (__dependencies)
 if (PARAVIEW_USE_MPI)
   set (__dependencies
     vtkFiltersParallelMPI
+    vtkRenderingParallelLIC
     )
-
-  if (PARAVIEW_BUILD_PLUGIN_SurfaceLIC)
-    list(APPEND __dependencies vtkRenderingParallelLIC)
-  endif()
-
   if (PARAVIEW_USE_ICE_T)
     list(APPEND __dependencies vtkicet)
   endif()

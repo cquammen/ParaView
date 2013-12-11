@@ -6,6 +6,7 @@
 set(_vtk_mpi_modules
   vtkParallelMPI
   vtkFiltersParallelImaging
+  vtkRenderingParallelLIC
   vtkIOMPIImage
   vtkFiltersParallelMPI
   # Note: Not in ParaViewXXX.xml but required by a test.
@@ -26,12 +27,6 @@ if (UNIX AND PARAVIEW_ENABLE_COSMOTOOLS)
     vtkPVVTKExtensionsCosmoTools
     # Needed for:
     #  vtkPVVTKExtensionsCosmoTools
-    )
-endif()
-
-if (PARAVIEW_BUILD_PLUGIN_SurfaceLIC)
-  list(APPEND _vtk_mpi_modules
-    vtkRenderingParallelLIC
     )
 endif()
 
