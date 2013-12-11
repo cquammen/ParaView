@@ -355,6 +355,11 @@ void vtkPythonView::InteractiveRender()
 //----------------------------------------------------------------------------
 vtkImageData* vtkPythonView::GenerateImage()
 {
+  if (!this->MatplotlibUtilities)
+    {
+    return NULL;
+    }
+
   // Now draw the image
   int width  = this->Size[0] * this->Magnification;
   int height = this->Size[1] * this->Magnification;
@@ -377,12 +382,7 @@ vtkImageData* vtkPythonView::GenerateImage()
   vtkImageData* imageData = this->MatplotlibUtilities->
     ImageFromScript(renderCommandStream.str().c_str(), "pythonViewCanvas", width, height);
 
-  if (this->MatplotlibUtilities && imageData)
-    {
-    return imageData;
-    }
-
-  return NULL;
+  return imageData;
 }
 
 //----------------------------------------------------------------------------
