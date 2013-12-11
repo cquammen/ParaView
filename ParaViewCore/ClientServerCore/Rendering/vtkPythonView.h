@@ -20,10 +20,10 @@
 #ifndef __vtkPythonView_h
 #define __vtkPythonView_h
 
-#include "vtkPVClientServerCoreRenderingModule.h" //needed for exports
 #include "vtkPVView.h"
 
-#include "vtkSmartPointer.h"
+#include "vtkPVClientServerCoreRenderingModule.h" //needed for exports
+#include "vtkSmartPointer.h" //needed for member variables
 
 class vtkImageData;
 class vtkInformationRequestKey;

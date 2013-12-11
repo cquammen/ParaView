@@ -76,7 +76,7 @@ QStringList pqStandardViewModules::viewTypes() const
     pqComparativeXYBarChartView::chartViewType() <<
     pqParallelCoordinatesChartView::chartViewType() <<
     pqMultiSliceView::multiSliceViewType() <<
-#if defined(PARAVIEW_ENABLE_PYTHON)
+#if defined(PARAVIEW_ENABLE_PYTHON) && defined(PARAVIEW_ENABLE_MATPLOTLIB)
     pqPythonView::pythonViewType() <<
 #endif
     pqPlotMatrixView::viewType();

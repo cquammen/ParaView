@@ -21,8 +21,9 @@
 #ifndef __vtkPythonRepresentation_h
 #define __vtkPythonRepresentation_h
 
-#include "vtkPVClientServerCoreRenderingModule.h" //needed for exports
 #include "vtkPVDataRepresentation.h"
+
+#include "vtkPVClientServerCoreRenderingModule.h" //needed for exports
 
 class vtkReductionFilter;
 

@@ -47,7 +47,6 @@ set (Module_SRCS
   vtkSMParallelCoordinatesRepresentationProxy.cxx
   vtkSMPlotMatrixViewProxy.cxx
   vtkSMPVRepresentationProxy.cxx
-  vtkSMPythonViewProxy.cxx
   vtkSMRenderViewProxy.cxx
   vtkSMRepresentationProxy.cxx
   vtkSMScalarBarWidgetRepresentationProxy.cxx
@@ -60,6 +59,10 @@ set (Module_SRCS
   vtkSMViewProxy.cxx
   vtkSMWidgetRepresentationProxy.cxx
 )
+
+if (PARAVIEW_ENABLE_PYTHON AND PARAVIEW_ENABLE_MATPLOTLIB)
+  list(APPEND Module_SRCS vtkSMPythonViewProxy.cxx)
+endif()
 
 vtk_module_library(vtkPVServerManagerRendering
   ${Module_SRCS})

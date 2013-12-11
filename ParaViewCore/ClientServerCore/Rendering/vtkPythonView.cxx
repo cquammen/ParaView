@@ -357,6 +357,7 @@ vtkImageData* vtkPythonView::GenerateImage()
 {
   if (!this->MatplotlibUtilities)
     {
+    vtkErrorMacro(<< "matplotlib is not available. Python views will not work.");
     return NULL;
     }
 
