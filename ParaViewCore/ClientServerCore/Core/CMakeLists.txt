@@ -75,6 +75,7 @@ set (Module_SRCS
   vtkPVTimerInformation.cxx
   vtkSession.cxx
   vtkSessionIterator.cxx
+  vtkSMSettings.cxx
   vtkTCPNetworkAccessManager.cxx
 )
 
@@ -111,6 +112,12 @@ set_source_files_properties(
   vtkPVSession
   vtkSession
   ABSTRACT)
+
+
+include_directories(
+  ${vtkjsoncpp_SOURCE_DIR}
+  ${vtkjsoncpp_BINARY_DIR}
+)
 
 # Use a custom hints file for this module.
 set(${vtk-module}_WRAP_HINTS "${CMAKE_CURRENT_SOURCE_DIR}/hints")

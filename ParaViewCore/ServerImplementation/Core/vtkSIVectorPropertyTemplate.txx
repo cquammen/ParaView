@@ -17,10 +17,13 @@
 #include "vtkClientServerStream.h"
 #include "vtkObjectFactory.h"
 #include "vtkPVXMLElement.h"
+#include "vtkSIProxy.h"
 #include "vtkSMMessage.h"
+#include "vtkSMSettings.h"
 
 #include <vector>
 #include <assert.h>
+#include <vtksys/ios/sstream>
 
 namespace
 {
@@ -465,6 +468,29 @@ bool vtkSIVectorPropertyTemplate<T, force_idtype>::ReadXMLAttributes(
     return false;
     }
 
+  // See if there are any settings defined for this proxy that should override the defaults
+  bool hasSetting = false;
+  std::vector<T> settingValues;
+  if ( proxy->GetXMLGroup() && proxy->GetXMLName() && this->GetXMLName() )
+    {
+    vtksys_ios::ostringstream settingStringStream;
+    settingStringStream << "." << proxy->GetXMLGroup() << "." << proxy->GetXMLName() << "."
+                        << this->GetXMLName();
+    std::string settingString(settingStringStream.str());
+    vtkSMSettings * settings = vtkSMSettings::GetInstance();
+    if (settings->Has(settingString.c_str()))
+      {
+      std::cout << "Have setting SI\n";
+      hasSetting = settings->GetVectorSetting(settingString.c_str(), settingValues);
+      }
+    }
+  else
+    {
+    std::cout << "Missing string SI: " << ( proxy->GetXMLGroup() ? proxy->GetXMLGroup() : "(null)")
+              << ", " << ( proxy->GetXMLName() ? proxy->GetXMLName() : "(null)")
+              << ", " << ( this->GetXMLName() ? this->GetXMLName() : "(null)") << std::endl;
+    }
+
   int number_of_elements = 0;
   element->GetScalarAttribute("number_of_elements", &number_of_elements);
 
@@ -478,7 +504,12 @@ bool vtkSIVectorPropertyTemplate<T, force_idtype>::ReadXMLAttributes(
     {
     std::vector<T> values;
     values.resize(number_of_elements);
-    if (element->GetAttribute("default_values") &&
+    if (hasSetting)
+      {
+      // TODO - error checking for vector length agreement
+      values = settingValues;
+      }
+    else if (element->GetAttribute("default_values") &&
       strcmp("none", element->GetAttribute("default_values")) == 0 )
       {
       // initialized to nothing.

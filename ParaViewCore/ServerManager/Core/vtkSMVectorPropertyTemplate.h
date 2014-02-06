@@ -27,6 +27,8 @@
 #include "vtkCommand.h"
 #include <vtkPVXMLElement.h>
 #include "vtkSMProperty.h"
+#include "vtkSMProxy.h"
+#include "vtkSMSettings.h"
 #include <typeinfo>
 #include <limits>
 
@@ -307,7 +309,42 @@ public:
   //---------------------------------------------------------------------------
   void ResetToDefaultInternal()
     {
-    if (this->DefaultsValid && this->DefaultValues != this->Values)
+    // Check for a setting for this property
+    vtkSMSettings * settings = vtkSMSettings::GetInstance();
+    bool hasSetting = false;
+    std::vector<T> settingValues;
+
+    vtkSMProxy * proxy = this->Property->GetParent();
+    if ( proxy->GetXMLGroup() && proxy->GetXMLName() && this->Property->GetXMLName() )
+      {
+      vtksys_ios::ostringstream settingStringStream;
+      settingStringStream << "." << proxy->GetXMLGroup() << "." << proxy->GetXMLName() << "."
+                          << this->Property->GetXMLName();
+      std::string settingString(settingStringStream.str());
+      vtkSMSettings * settings = vtkSMSettings::GetInstance();
+      if (settings->Has(settingString.c_str()))
+        {
+        std::cout << "Have setting SM\n";
+        hasSetting = settings->GetVectorSetting(settingString.c_str(), settingValues);
+        }
+      }
+    else
+      {
+      std::cout << "Missing string SM: " << ( proxy->GetXMLGroup() ? proxy->GetXMLGroup() : "(null)")
+                << ", " << ( proxy->GetXMLName() ? proxy->GetXMLName() : "(null)")
+                << ", " << ( this->Property->GetXMLName() ? this->Property->GetXMLName() : "(null)") << std::endl;
+      }
+
+    if (hasSetting)
+      {
+      this->Values = settingValues;
+      // Make sure to initialize BEFORE Modified() is called. Otherwise,
+      // the value would not be pushed.
+      this->Initialized = true;
+      this->Property->Modified();
+      this->ClearUncheckedElements();
+      }
+    else if (this->DefaultsValid && this->DefaultValues != this->Values)
       {
       this->Values = this->DefaultValues;
       // Make sure to initialize BEFORE Modified() is called. Otherwise,

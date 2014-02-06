@@ -30,6 +30,7 @@ vtk_module(vtkPVClientServerCoreCore
     ${__dependencies}
   PRIVATE_DEPENDS
     vtksys
+    vtkjsoncpp
   COMPILE_DEPENDS
   # This ensures that CS wrappings will be generated 
     vtkUtilitiesWrapClientServer

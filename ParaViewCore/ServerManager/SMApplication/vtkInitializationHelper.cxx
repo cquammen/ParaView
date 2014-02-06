@@ -27,6 +27,7 @@ PURPOSE.  See the above copyright notice for more information.
 #include "vtkSMMessage.h"
 #include "vtkSMProperty.h"
 #include "vtkSMProxyManager.h"
+#include "vtkSMSettings.h"
 
 #include <string>
 #include <vtksys/ios/sstream>
@@ -183,6 +184,34 @@ void vtkInitializationHelper::Initialize(int argc, char**argv,
   // These are always loaded (not merely located).
   vtkNew<vtkPVPluginLoader> loader;
   loader->LoadPluginsFromPluginSearchPath();
+
+  // Load settings files. Only load settings on client.
+  // TODO revisit logic
+  if ( vtkProcessModule::GetProcessModule()->GetProcessType() == vtkProcessModule::PROCESS_CLIENT )
+    {
+    std::string userSettingsFileName("/home/cory/pvsettings.js");
+    std::ifstream userSettingsFile(userSettingsFileName.c_str(), ios::in | ios::binary | ios::ate );
+    if ( userSettingsFile.is_open() )
+      {
+      std::streampos size = userSettingsFile.tellg();
+      userSettingsFile.seekg(0, ios::beg);
+      int stringSize = size;
+      char * userSettingsString = new char[stringSize+1];
+      userSettingsFile.read(userSettingsString, stringSize);
+      userSettingsString[stringSize] = '\0';
+      userSettingsFile.close();
+
+      vtkSMSettings * settings = vtkSMSettings::GetInstance();
+      settings->SetUserSettingsString( userSettingsString );
+      delete[] userSettingsString;
+      }
+    else
+      {
+      vtkGenericWarningMacro(<< "Could not load user settings file '" << userSettingsFileName << "'");
+      }
+    }
+
+  vtkSMSettings::GetInstance()->BroadcastSettings();
 }
 
 //----------------------------------------------------------------------------
