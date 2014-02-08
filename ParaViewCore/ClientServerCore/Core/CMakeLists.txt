@@ -113,12 +113,6 @@ set_source_files_properties(
   vtkSession
   ABSTRACT)
 
-
-include_directories(
-  ${vtkjsoncpp_SOURCE_DIR}
-  ${vtkjsoncpp_BINARY_DIR}
-)
-
 # Use a custom hints file for this module.
 set(${vtk-module}_WRAP_HINTS "${CMAKE_CURRENT_SOURCE_DIR}/hints")
 vtk_module_library(vtkPVClientServerCoreCore ${Module_SRCS})
