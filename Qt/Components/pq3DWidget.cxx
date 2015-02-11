@@ -71,7 +71,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "pqPipelineFilter.h"
 #include "pqPipelineSource.h"
 #include "pqPointSourceWidget.h"
-#include "pqPolyLineSourceWidget.h"
+#include "pqPolyLineWidget.h"
 #include "pqRenderView.h"
 #include "pqServer.h"
 #include "pqSMAdaptor.h"
@@ -123,7 +123,7 @@ public:
       }
     else if (name == "PolyLineSource")
       {
-      widget = new pqPolyLineSourceWidget(referenceProxy, controlledProxy, 0);
+      widget = new pqPolyLineWidget(referenceProxy, controlledProxy, 0);
       }
     else if (name == "Distance")
       {

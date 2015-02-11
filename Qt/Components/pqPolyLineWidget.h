@@ -1,7 +1,7 @@
 /*=========================================================================
 
    Program: ParaView
-   Module:    pqPolyLineSourceWidget.h
+   Module:    pqPolyLineWidget.h
 
    Copyright (c) 2005,2006 Sandia Corporation, Kitware Inc.
    All rights reserved.
@@ -29,42 +29,52 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ========================================================================*/
-#ifndef __pqPolyLineSourceWidget_h
-#define __pqPolyLineSourceWidget_h
+#ifndef __pqPolyLineWidget_h 
+#define __pqPolyLineWidget_h
 
-#include "pqHandleWidget.h"
-#include "pqComponentsModule.h"
+#include "pq3DWidget.h"
+#include <QColor>
 
 class pqServer;
 
-/// GUI for PolyLineWidgetRepresentation. Enables 3D placement of points.
-class PQCOMPONENTS_EXPORT pqPolyLineSourceWidget : public pqHandleWidget
+/// GUI for PolyLineWidgetRepresentation. This is a 3D widget that edits a spline.
+class PQCOMPONENTS_EXPORT pqPolyLineWidget : public pq3DWidget
 {
-  typedef pqHandleWidget Superclass;
-
   Q_OBJECT
-
+  typedef pq3DWidget Superclass;
 public:
-  pqPolyLineSourceWidget(vtkSMProxy* o, vtkSMProxy* pxy, QWidget* p = 0);
-  virtual ~pqPolyLineSourceWidget();
+  pqPolyLineWidget(vtkSMProxy* refProxy, vtkSMProxy* proxy, QWidget* parent);
+  virtual ~pqPolyLineWidget();
+
+  /// Resets the bounds of the 3D widget to the reference proxy bounds.
+  /// This typically calls PlaceWidget on the underlying 3D Widget 
+  /// with reference proxy bounds.
+  /// This should be explicitly called after the panel is created
+  /// and the widget is initialized i.e. the reference proxy, controlled proxy
+  /// and hints have been set.
+  virtual void resetBounds(double /*bounds*/[6]) {}
+  virtual void resetBounds()
+    { return this->Superclass::resetBounds(); }
+
+  void setLineColor(const QColor& color);
 
 protected slots:
   void addPoint();
   void removePoints();
 
-protected:
-  void createWidget(pqServer*);
-
   /// Snap currently selected point to surface.
   virtual void pick(double x, double y, double z);
 
+protected:
+  /// Internal method to create the widget.
+  void createWidget(pqServer*);
+
 private:
-  pqPolyLineSourceWidget(const pqPolyLineSourceWidget&); // Not implemented.
-  void operator=(const pqPolyLineSourceWidget&); // Not implemented.
+  pqPolyLineWidget(const pqPolyLineWidget&); // Not implemented.
+  void operator=(const pqPolyLineWidget&); // Not implemented.
 
-  class pqImplementation;
-  pqImplementation* const Implementation;
-
+  class pqInternals;
+  pqInternals* Internals;
 };
 
 #endif

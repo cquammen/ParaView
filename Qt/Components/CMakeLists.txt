@@ -227,8 +227,8 @@ set (Module_SRCS
   pqPluginTreeWidget.h
   pqPointSourceWidget.cxx
   pqPointSourceWidget.h
-  pqPolyLineSourceWidget.cxx
-  pqPolyLineSourceWidget.h
+  pqPolyLineWidget.cxx
+  pqPolyLineWidget.h
   pqPopOutWidget.cxx
   pqPopOutWidget.h
   pqPropertiesPanel.cxx
@@ -448,7 +448,7 @@ set (Module_MOC_HDRS
   pqPluginTreeWidgetEventTranslator.h
   pqPluginTreeWidget.h
   pqPointSourceWidget.h
-  pqPolyLineSourceWidget.h
+  pqPolyLineWidget.h
   pqPopOutWidget.h
   pqPropertiesPanel.h
   pqPropertyGroupWidget.h
@@ -552,7 +552,7 @@ set (Module_UI_FILES
   Resources/UI/pqPipelineTimeKeyFrameEditor.ui
   Resources/UI/pqPluginDialog.ui
   Resources/UI/pqPointSourceControls.ui
-  Resources/UI/pqPolyLineSourceControls.ui
+  Resources/UI/pqPolyLineWidget.ui
   Resources/UI/pqPropertiesPanel.ui
   Resources/UI/pqProxyInformationWidget.ui
   Resources/UI/pqProxyWidgetDialog.ui
