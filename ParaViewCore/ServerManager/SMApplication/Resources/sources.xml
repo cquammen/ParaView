@@ -1128,10 +1128,19 @@
                             use_index="1"
                             panel_visibility="never">
       </DoubleVectorProperty>
+      <IntVectorProperty command="SetClosed"
+                         default_values="0"
+                         name="Closed"
+                         number_of_elements="1"
+                         panel_visibility="never">
+        <BooleanDomain name="bool" />
+      </IntVectorProperty>
       <Hints>
         <PropertyGroup type="PolyLineSource">
           <Property function="HandlePositions"
                     name="Points" />
+          <Property function="Closed"
+                    name="Closed" />
         </PropertyGroup>
       </Hints>
     </SourceProxy>
