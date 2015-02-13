@@ -59,6 +59,8 @@ int vtkGeodesicsBetweenPoints::FillInputPortInformation(int port, vtkInformation
     info->Set(vtkAlgorithm::INPUT_REQUIRED_DATA_TYPE(), "vtkPointSet");
     info->Set(vtkAlgorithm::INPUT_IS_OPTIONAL(), 1);
     }
+
+  return 1;
 }
 
 //-----------------------------------------------------------------------------
